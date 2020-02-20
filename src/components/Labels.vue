@@ -1,10 +1,13 @@
 <template>
-    <div>我是标签页</div>
+    <div>
+        我是标签页
+        <Nav />
+    </div>
 </template>
 
 <script lang="ts">
     export default {
-        name: 'Labels'
+        name: 'Labels',
     };
 </script>
 

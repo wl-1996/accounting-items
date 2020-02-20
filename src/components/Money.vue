@@ -1,10 +1,14 @@
 <template>
-    <div>我是记账页，也是首页</div>
+    <div>
+        我是记账页，也是首页
+         <Nav />
+    </div>
 </template>
 
 <script lang="ts">
+
     export default {
-        name: 'Money'
+        name: 'Money',
     };
 </script>
 

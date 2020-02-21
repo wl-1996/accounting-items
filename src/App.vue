@@ -1,13 +1,16 @@
 <template>
     <div>
-        App
-        <hr>
         <router-view/>
-        <hr>
     </div>
 </template>
 
 <style lang="scss">
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -30,6 +33,5 @@
     }
 </style>
 <script>
-  export default {
-  }
+    export default {}
 </script>

@@ -2,7 +2,7 @@
     <Layout class-prefix="layout">
         <Tags/>
         <Notes/>
-        <Types/>
+        <Types xxx="hi"/>
         <NumberPad/>
     </Layout>
 </template>
@@ -19,7 +19,7 @@
     };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
     .layout-content {
         display: flex;
         flex-direction: column;

@@ -14,6 +14,7 @@
     @Component
     export default class Types extends Vue {
         @Prop() readonly value!: string;
+
         selectType(value: string) {
             if (value !== '-' && value !== '+') {
                 throw new Error('type is unKnow');

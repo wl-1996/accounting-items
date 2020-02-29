@@ -5,9 +5,9 @@
         </div>
         <ul class="current">
             <li v-for="tag in dataSource"
-                :key="tag"
+                :key="tag.id"
                 @click="toggle(tag)" :class="{selected: selectedTags
-                .indexOf(tag) > -1}">{{tag}}
+                .indexOf(tag) > -1}">{{tag.name}}
             </li>
         </ul>
     </div>
@@ -37,7 +37,8 @@
             if (name === '') {
                 window.alert('标签名不能为空');
             } else if (this.dataSource) {
-                this.$emit('update:dataSource', [...this.dataSource, name]);
+                console.log(this.dataSource);
+                this.$emit('update:dataSource', [...this.dataSource, {id: name, name: name}]);
             }
         }
     }

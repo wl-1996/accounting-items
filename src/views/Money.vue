@@ -1,5 +1,5 @@
 <template>
-    <Layout class-prefix="layout">
+    <Layout class-prefix="  layout">
         {{recordList}}
         <Tags :dataSource.sync="tags" @update:value="onUpdateTags"/>
         <Notes @update:value="onUpdateNotes"/>

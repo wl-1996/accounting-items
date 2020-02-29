@@ -1,9 +1,11 @@
 <template>
     <Layout class-prefix="  layout">
-        {{recordList}}
+        {{record}}
         <Tags :dataSource.sync="tags" @update:value="onUpdateTags"/>
         <div class="notes">
-            <FormItem :placeholder="'请输入备注'" :filed-name="'备注'" @update:value="onUpdateNotes"/>
+            <FormItem :placeholder="'请输入备注'"
+                      :filed-name="'备注'"
+                      @update:value="onUpdateNotes"/>
         </div>
         <Types :value.sync="record.type"/>
         <NumberPad :value.sync="record.amount"

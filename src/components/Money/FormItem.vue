@@ -13,7 +13,7 @@
 
     @Component
     export default class FormItem extends Vue {
-        value = '';
+        @Prop({default: ''}) value!: string;
 
         @Prop({required: true}) filedName!: string;
         @Prop({}) placeholder?: string;

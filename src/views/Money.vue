@@ -30,7 +30,7 @@
         components: {FormItem, Tags, Types, NumberPad},
     })
     export default class Money extends Vue {
-        record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date()};
+        record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
         tags = tagList;
         recordList: RecordItem[] = recordList;
 
@@ -43,9 +43,7 @@
         }
 
         saveRecord() {
-            const record2: RecordItem = recordListModel.clone(this.record);
-            // record2.createAt = new Date();
-            this.recordList.push(record2);
+            recordListModel.create(this.record)
         }
 
         @Watch('recordList')

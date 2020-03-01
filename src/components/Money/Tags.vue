@@ -16,6 +16,7 @@
 <script lang="ts">
     import Vue from 'vue';
     import {Component, Prop} from 'vue-property-decorator';
+    import createId from '@/lib/createId';
 
     @Component
     export default class Tags extends Vue {
@@ -37,7 +38,8 @@
             if (name === '') {
                 window.alert('标签名不能为空');
             } else if (this.dataSource) {
-                this.$emit('update:dataSource', [...this.dataSource, {id: name, name: name}]);
+                const id = createId();
+                this.$emit('update:dataSource', [...this.dataSource, {id: id, name: name}]);
             }
         }
     }

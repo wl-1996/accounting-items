@@ -40,7 +40,6 @@
 
         saveRecord() {
             store.createRecord(this.record);
-            console.log(this.record);
         }
     }
 </script>

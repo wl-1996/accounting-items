@@ -28,14 +28,9 @@
         tags = window.tagList;
 
         createTag() {
-            const name = window.prompt('请输入新的标签名');
+            const name = prompt('请输入标签名');
             if (name) {
-                const message = tagListModel.create(name);
-                if (message === 'success') {
-                    window.alert('您成功创建了新的标签');
-                } else {
-                    window.alert('您输入的标签名重复，请重新创建标签');
-                }
+                window.createTag(name);
             }
         }
     }

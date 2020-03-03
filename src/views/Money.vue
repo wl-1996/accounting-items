@@ -1,6 +1,7 @@
 <template>
     <Layout class-prefix="  layout">
-        <Tags :dataSource.sync="tags" @update:value="onUpdateTags"/>
+        {{record}}
+        <Tags @update:value="onUpdateTags"/>
         <div class="notes">
             <FormItem :placeholder="'请输入备注'"
                       :filed-name="'备注'"
@@ -27,10 +28,9 @@
     })
     export default class Money extends Vue {
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
-        tags = store.tagList;
         recordList = store.recordList;
 
-        onUpdateTags(value: string[]) {
+        onUpdateTags(value: string[]){
             this.record.tags = value;
         }
 
@@ -40,6 +40,7 @@
 
         saveRecord() {
             store.createRecord(this.record);
+            console.log(this.record);
         }
     }
 </script>

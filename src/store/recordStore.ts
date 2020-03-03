@@ -12,6 +12,7 @@ const recordStore = {
         return this.recordList;
     },
     createRecord(record: RecordItem) {
+        console.log('haha');
         const record2: RecordItem = clone(record);
         record2.createdAt = new Date();
         console.log(record2);

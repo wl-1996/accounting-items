@@ -25,7 +25,7 @@ const tagStore = {
                 id: id,
                 name: name
             });
-            tagStore.saveTags();
+            this.saveTags();
             window.alert('您成功创建了新的标签');
             return 'success';
         }

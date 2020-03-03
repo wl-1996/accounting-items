@@ -1,5 +1,5 @@
 <template>
-    <Layout class-prefix="  layout">
+    <Layout class-prefix="layout">
         {{record}}
         <Tags @update:value="onUpdateTags"/>
         <div class="notes">
@@ -25,12 +25,18 @@
 
     @Component({
         components: {FormItem, Tags, Types, NumberPad},
+        computed: {
+            recordList() {
+                return store.recordList;
+            }
+
+        }
     })
+
     export default class Money extends Vue {
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
-        recordList = store.recordList;
 
-        onUpdateTags(value: string[]){
+        onUpdateTags(value: string[]) {
             this.record.tags = value;
         }
 

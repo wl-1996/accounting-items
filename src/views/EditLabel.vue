@@ -4,7 +4,7 @@
             <Icon @click.native="goBack"
                   class="leftIcon" name="left"/>
             <span class="title">编辑标签</span>
-            <span class="rightIcon"></span>
+            <span class="rightIcon"/>
         </div>
         <div class="form-wrapper">
             <FormItem @update:value="update"
@@ -23,7 +23,6 @@
     import {Component} from 'vue-property-decorator';
     import FormItem from '@/components/Money/FormItem.vue';
     import Button from '@/components/Button.vue';
-    import store from '@/store/index2.ts';
 
     @Component({
         components: {Button, FormItem}
@@ -32,7 +31,8 @@
         tag?: Tag = undefined;
 
         created() {
-            this.tag = store.findTag(this.$route.params.id);
+            //TODO
+            // this.tag = this.$store.findTag(this.$route.params.id);
             if (!this.tag) {
                 this.$router.replace('/404');
             }
@@ -40,17 +40,20 @@
 
         update(name: string) {
             if (this.tag) {
-                store.updateTag(this.tag.id, name);
+                //TODO
+                // this.$store.updateTag(this.tag.id, name);
             }
         }
 
         remove() {
             if (this.tag) {
-                if (store.removeTag(this.tag.id)) {
-                    this.$router.back();
-                } else {
-                    window.alert('删除失败');
-                }
+                //TODO
+                // if (this.$store.commit('removeTag',this.tag.id)) {
+                //     this.$router.back();
+                // } else {
+                //     window.alert('删除失败');
+                // }
+                return;
             }
         }
 

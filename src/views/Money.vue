@@ -1,8 +1,6 @@
 <template>
     <Layout class-prefix="layout">
-        {{record}}
-        {{count}}
-        <button @click="$store.commit('increament',4)">add</button>
+        {{recordList}}
         <Tags @update:value="onUpdateTags"/>
         <div class="notes">
             <FormItem :placeholder="'请输入备注'"
@@ -23,22 +21,23 @@
     import FormItem from '@/components/Money/FormItem.vue';
     import Types from '@/components/Money/Types.vue';
     import {Component} from 'vue-property-decorator';
-    import oldStore from '@/store/index2.ts';
 
     @Component({
         components: {FormItem, Tags, Types, NumberPad},
         computed: {
             //计算属性会更新依赖，
-            //把count放到计算属性里面，当store.state.count变化时会更新count
-            count() {
-                return this.$store.state.count;
+            recordList() {
+                return this.$store.state.recordList;
             }
         }
     })
 
     export default class Money extends Vue {
-        recordList = oldStore.recordList;
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+
+        created(){
+            this.$store.commit('fetchRecords')
+        }
 
         onUpdateTags(value: string[]) {
             this.record.tags = value;
@@ -49,7 +48,7 @@
         }
 
         saveRecord() {
-            oldStore.createRecord(this.record);
+            this.$store.commit('createRecord',this.record);
         }
     }
 </script>

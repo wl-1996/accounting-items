@@ -22,16 +22,23 @@
 
     @Component({
         components: {Button},
+        computed: {
+            tags() {
+                return this.$store.state.tagList;
+            }
+        }
     })
     export default class Labels extends Vue {
-        //TODU
-        tags = [];
+        created() {
+            this.$store.commit('fetchTags');
+        }
 
         createTag() {
             const name = prompt('请输入标签名');
-            if (name) {
-                //TODU
-                // this.$store.commit('createTag',name);
+            if (!name) {
+                return window.alert('标签名不能为空');
+            } else {
+                this.$store.commit('createTag', name);
             }
         }
     }

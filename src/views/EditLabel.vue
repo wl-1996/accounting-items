@@ -33,26 +33,28 @@
         }
 
         created() {
-            //TODO
             const id = this.$route.params.id;
+            this.$store.commit('fetchTags');
             this.$store.commit('setCurrentTag', id);
             if (!this.tag) {
+                console.log('no tag');
                 this.$router.replace('/404');
+            } else {
+                console.log('has tag');
             }
         }
 
         update(name: string) {
             if (this.tag) {
-                this.$store.commit('this.tag.id', name);
+                this.$store.commit('updateTag', {id: this.tag.id, name});
             }
         }
 
         remove() {
             if (this.tag) {
                 //TODO
-                this.$store.commit('removeTag',this.tag.id)
+                this.$store.commit('removeTag', this.tag.id);
                 // if () {
-                    this.$router.back();
                 // } else {
                 //     window.alert('删除失败');
                 // }

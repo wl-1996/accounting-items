@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 // import clone from '@/lib/clone';
 import createId from '@/lib/createId';
+import router from '@/router'
 
 Vue.use(Vuex);// 把 store 绑到 Vue.prototype.$store = store
 
@@ -45,13 +46,19 @@ const store = new Vuex.Store({
                     break;
                 }
             }
-            store.state.tagList.splice(index, 1);
-            store.commit('saveTags');
+            if(index >= 0){
+                store.state.tagList.splice(index, 1);
+                store.commit('saveTags');
+                router.back()
+            }else{
+                window.alert('删除失败')
+            }
         },
         saveTags(state) {
             window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
         },
-        updateTag(state, {id, name}) {
+        updateTag(state, payload: {id: string; name: string}) {
+            const {id,name} = payload;
             const idList = store.state.tagList.map(i => i.id);
             if (idList.indexOf(id) > -1) {
                 const names = store.state.tagList.map(i => i.name);
@@ -60,10 +67,8 @@ const store = new Vuex.Store({
                 } else {
                     const tag = store.state.tagList.filter(item => item.id === id)[0];
                     tag.name = name;
-                    store.commit('saveTag');
+                    store.commit('saveTags');
                 }
-            } else {
-                window.alert('not found');
             }
         },
         fetchRecords(state) {

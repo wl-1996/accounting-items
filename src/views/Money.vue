@@ -24,19 +24,17 @@
 
     @Component({
         components: {FormItem, Tags, Types, NumberPad},
-        computed: {
-            //计算属性会更新依赖，
-            recordList() {
-                return this.$store.state.recordList;
-            }
-        }
     })
 
     export default class Money extends Vue {
+        get recordList() {
+            return this.$store.state.recoreList;
+        }
+
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
-        created(){
-            this.$store.commit('fetchRecords')
+        created() {
+            this.$store.commit('fetchRecords');
         }
 
         onUpdateTags(value: string[]) {
@@ -48,7 +46,7 @@
         }
 
         saveRecord() {
-            this.$store.commit('createRecord',this.record);
+            this.$store.commit('createRecord', this.record);
         }
     }
 </script>

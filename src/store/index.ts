@@ -5,14 +5,24 @@ import createId from '@/lib/createId';
 
 Vue.use(Vuex);// 把 store 绑到 Vue.prototype.$store = store
 
+type RootState = {
+    recordList: RecordItem[];
+    tagList: Tag[];
+    currentTag?: Tag;
+}
+
 const store = new Vuex.Store({
     state: {
-        recordList: [] as RecordItem[],
-        tagList: [] as Tag[]
-    },
+        recordList: [],
+        tagList: [],
+        currentTag: undefined
+    } as RootState,
     mutations: {
+        setCurrentTag(state, id: string) {
+            state.currentTag = state.tagList.filter(i => i.id == id)[0];
+        },
         fetchTags(state) {
-            state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]') as Tag[];
+            state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
         },
         createTag(state, name: string) {
             //map()方法创建一个新数组，其中填充了在调用数组中每个元素上调用提供的函数的结果.

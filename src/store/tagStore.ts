@@ -40,7 +40,6 @@ const tagStore = {
         }
         this.tagList.splice(index, 1);
         this.saveTags();
-        return true;
     },
     updateTag(id: string, name: string) {
         const idList = this.tagList.map(item => item.id);

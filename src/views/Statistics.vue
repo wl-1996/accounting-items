@@ -21,7 +21,7 @@
         components: {Tabs},
     })
     export default class Statistics extends Vue {
-        type = '+';
+        type = '-';
         recordTypeList = recordTypeList;
         interval = 'day';
         intervalList = intervalList;
@@ -29,7 +29,7 @@
 </script>
 
 <style lang="scss" scoped>
-    ::v-deep .types-tabs-item, ::v-deep .interval-tabs-item {
+    ::v-deep .types-tabs-item{
         background: white;
 
         &.selected {
@@ -39,5 +39,8 @@
                 display: none;
             }
         }
+    }
+    ::v-deep .tabs .interval-tabs-item{
+        height: 48px;
     }
 </style>

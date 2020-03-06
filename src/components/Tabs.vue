@@ -5,7 +5,6 @@
                 :class="liClass(item)" @click="select(item)">{{item.text}}
             </li>
         </ul>
-
     </div>
 </template>
 

@@ -24,7 +24,7 @@
     import Tabs from '@/components/Tabs.vue';
 
     @Component({
-        components: {Tabs, FormItem, Tags,  NumberPad},
+        components: {Tabs, FormItem, Tags, NumberPad},
     })
 
     export default class Money extends Vue {

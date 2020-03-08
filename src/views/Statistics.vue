@@ -1,13 +1,16 @@
 <template>
     <Layout>
         <Tabs class-prefix="types" :data-source="recordTypeList" :value.sync="type"/>
-        <Tabs class-prefix="interval" :dataSource="intervalList" :value.sync="interval"/>
         <ol>
-            <li v-for="(group,index) in result" :key="index">
-                <h3 class="title">{{group.title}}</h3>
+            <li v-for="(group,index) in groupedList" :key="index">
+                <h3 class="title">
+                    {{beautify(group.title)}}
+                    <span>￥{{group.total}}</span>
+                </h3>
                 <ol>
                     <li class="record" v-for="item in group.items" :key="item.id">
-                        <span>{{tagString(item.tags.map(i=>i.name))}}</span>
+                        <span>{{tagString(item.tags.map(i=>i.name))}}
+                        </span>
                         <span class="notes">{{item.notes}}</span>
                         <span>￥{{item.amount}}</span>
                     </li>
@@ -16,6 +19,98 @@
         </ol>
     </Layout>
 </template>
+<script lang="ts">
+    import Vue from 'vue';
+    import {Component} from 'vue-property-decorator';
+    import Tabs from '@/components/Tabs.vue';
+    import recordTypeList from '@/constants/recordTypeList';
+    import dayjs from 'dayjs';
+    import clone from '@/lib/clone';
+
+    @Component({
+        components: {Tabs},
+    })
+    export default class Statistics extends Vue {
+        beautify(string: string) {
+            const thatDay = dayjs(string);
+            const today = dayjs();
+            if (dayjs(string).isSame(new Date(),
+                'day')) {
+                return '今天';
+            } else if (thatDay.isSame(today.subtract(1, 'day'), 'day')) {
+                return '昨天';
+            } else if (thatDay.isSame(today.subtract(2, 'day'), 'day')) {
+                return '前天';
+            } else if (thatDay.isSame(today, 'year')) {
+                return thatDay.format('M月D日');
+            } else {
+                console.log(string);
+                return thatDay.format('YYYY年M月D日');
+            }
+        }
+
+        tagString(tags: string[]) {
+            return tags.length === 0 ? '无' : tags.join(',');
+        }
+
+        get recordList() {
+            return (this.$store.state as RootState).recordList;
+        }
+
+        get groupedList() {
+            const {recordList} = this;
+            //type hashTable : {title: string, items: RecordItem[]}[]
+            if (recordList.length === 0) {
+                return [];
+            }
+
+            //把recordList数组克隆一份再使用，防止别人正在用recordList
+            //因为下边的sort方法会改变原来的数组
+            const cloneRecordList = clone(recordList);
+            const newRecordList = cloneRecordList.filter(i => i.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+            type Result = [
+                {
+                    title: string;
+                    total?: number;
+                    items: RecordItem[];
+                }
+            ]
+            const result: Result = [{
+                title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
+                items: [newRecordList[0]]
+            }];
+            for (let i = 1; i < newRecordList.length; i++) {
+                const current = newRecordList[i];
+                const last = result[result.length - 1];
+                if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+                    last.items.push(current);
+                } else {
+                    result.push({
+                        title: dayjs(current.createdAt).format('YYYY-M-D'),
+                        items: [current]
+                    });
+                }
+            }
+            result.map(group => {
+                group.total = group.items.reduce((sum, item) => {
+                    console.log(sum);
+                    console.log(item);
+                    return sum + item.amount;
+                }, 0);
+            });
+            return result;
+        }
+
+        beforeCreate() {
+            this.$store.commit('fetchRecords');
+        }
+
+
+        type = '-';
+        recordTypeList = recordTypeList;
+    }
+</script>
+
 <style lang="scss" scoped>
     ::v-deep {
         .types-tabs-item {
@@ -53,56 +148,10 @@
         background: white;
     }
 
-    .notes{
+    .notes {
         margin-right: auto;
         margin-left: 15px;
     }
 </style>
-<script lang="ts">
-    import Vue from 'vue';
-    import {Component} from 'vue-property-decorator';
-    import Tabs from '@/components/Tabs.vue';
-    import intervalList from '@/constants/intervalList';
-    import recordTypeList from '@/constants/recordTypeList';
-    import logger from 'vuex/dist/logger';
 
-    @Component({
-        components: {Tabs},
-    })
-    export default class Statistics extends Vue {
-        tagString(tags: Tag[]){
-            return tags.join(',')
-        }
-
-        get recordList() {
-            return (this.$store.state as RootState).recordList;
-        }
-
-        get result() {
-            const {recordList} = this;
-            type HashTableValue = { title: string; items: RecordItem[] }
-
-            //hashTab是一个对象，对象的key是字符串，对象的value是RecordItem类型的数组：
-            const hashTable: { [key: string]: hashTableValue } = {};
-            for (let i = 0; i < recordList.length; i++) {
-                //析构语法，
-                // split() 方法使用指定的分隔符字符串将一个String对象分割成子字符串数组，以一个指定的分割字串来决定每个拆分的位置。
-                const [date, time] = recordList[i].createdAt!.split('T');
-                hashTable[date] = hashTable[date] || {title: date, items: []};
-                hashTable[date].items.push(recordList[i]);
-            }
-            console.log(hashTable);
-            return hashTable;
-        }
-
-        beforeCreate() {
-            this.$store.commit('fetchRecords');
-        }
-
-        type = '-';
-        recordTypeList = recordTypeList;
-        interval = 'day';
-        intervalList = intervalList;
-    }
-</script>
 

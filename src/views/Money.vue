@@ -40,7 +40,7 @@
             this.$store.commit('fetchRecords');
         }
 
-        onUpdateTags(value: string[]) {
+        onUpdateTags(value: Tag[]) {
             this.record.tags = value;
         }
 
@@ -50,6 +50,7 @@
 
         saveRecord() {
             this.$store.commit('createRecord', this.record);
+            window.alert('添加成功')
         }
     }
 </script>

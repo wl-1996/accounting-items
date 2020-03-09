@@ -1,4 +1,4 @@
-# wangcai-tally2
+# accounting-items
 
 ## Project setup
 ```

@@ -1,16 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import clone from '@/lib/clone';
 import createId from '@/lib/createId';
 import router from '@/router';
+import clone from '@/lib/clone';
 
 Vue.use(Vuex);// 把 store 绑到 Vue.prototype.$store = store
 
 const store = new Vuex.Store({
     state: {
         recordList: [],
+        createRecordError: null,
         tagList: [],
-        currentTag: undefined
+        createTagError: null,
+        currentTag: undefined,
     } as RootState,
     mutations: {
         setCurrentTag(state, id: string) {
@@ -18,18 +20,25 @@ const store = new Vuex.Store({
         },
         fetchTags(state) {
             state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+            if (!state.tagList || state.tagList.length === 0) {
+                store.commit('createTag', '衣');
+                store.commit('createTag', '食');
+                store.commit('createTag', '住');
+                store.commit('createTag', '行');
+            }
         },
         createTag(state, name: string) {
+            state.createTagError = null;
             //map()方法创建一个新数组，其中填充了在调用数组中每个元素上调用提供的函数的结果.
             const names = state.tagList.map(i => i.name);
             if (names.indexOf(name) > -1) {
-                window.alert('您输入的标签名重复，请重新创建标签');
+                state.createTagError = new Error('标签名重复');
+                return;
             } else {
                 const id = createId().toString();
                 const tag = {id: id, name: name};
                 state.tagList.push(tag);
                 store.commit('saveTags');
-                window.alert('您成功创建了新的标签');
             }
         },
         removeTag(state, id: string) {
@@ -42,6 +51,7 @@ const store = new Vuex.Store({
             }
             if (index >= 0) {
                 store.state.tagList.splice(index, 1);
+                window.alert('删除成功');
                 store.commit('saveTags');
                 router.back();
             } else {
@@ -69,14 +79,15 @@ const store = new Vuex.Store({
         fetchRecords(state) {
             state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
         },
-        createRecord(state, record) {
-            const record2 = JSON.parse(JSON.stringify(record));
+        createRecord(state, record: RecordItem) {
+            const record2 = clone(record);
             record2.createdAt = new Date().toISOString();
             state.recordList.push(record2);
             store.commit('saveRecords');
         },
         saveRecords(state) {
             window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
+            // window.alert('记账成功');
         }
     },
 });

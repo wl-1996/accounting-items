@@ -1,3 +1,11 @@
+type RootState = {
+    recordList: RecordItem[];
+    createRecordError: Error | null;
+    tagList: Tag[];
+    createTagError: Error | null;
+    currentTag?: Tag;
+}
+
 type RecordItem = {
     tags: Tag[];
     notes: string;
@@ -10,8 +18,3 @@ type Tag = {
     name: string;
 }
 
-type RootState = {
-    recordList: RecordItem[];
-    tagList: Tag[];
-    currentTag?: Tag;
-}

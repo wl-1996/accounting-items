@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <Tabs class-prefix="types" :data-source="recordTypeList" :value.sync="type"/>
-        <ol>
+        <ol v-if="groupedList.length > 0">
             <li v-for="(group,index) in groupedList" :key="index">
                 <h3 class="title">
                     {{beautify(group.title)}}
@@ -9,7 +9,7 @@
                 </h3>
                 <ol>
                     <li class="record" v-for="item in group.items" :key="item.id">
-                        <span>{{tagString(item.tags.map(i=>i.name))}}
+                        <span>{{tagString(item.tags)}}
                         </span>
                         <span class="notes">{{item.notes}}</span>
                         <span>￥{{item.amount}}</span>
@@ -17,6 +17,7 @@
                 </ol>
             </li>
         </ol>
+        <div class="noResult" v-else>目前没有该账单明细，请记账后进行查看</div>
     </Layout>
 </template>
 <script lang="ts">
@@ -49,8 +50,8 @@
             }
         }
 
-        tagString(tags: string[]) {
-            return tags.length === 0 ? '无' : tags.join(',');
+        tagString(tags: Tag[]) {
+            return tags.length === 0 ? '无' : tags.map(i => i.name).join('，');
         }
 
         get recordList() {
@@ -68,6 +69,10 @@
             //因为下边的sort方法会改变原来的数组
             const cloneRecordList = clone(recordList);
             const newRecordList = cloneRecordList.filter(i => i.type === this.type).sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
+            //上边filter筛选后可能导致newRecordList数组为0，所以下边要判断一下：
+            if (newRecordList.length === 0) {
+                return [];
+            }
             type Result = [
                 {
                     title: string;
@@ -93,8 +98,6 @@
             }
             result.map(group => {
                 group.total = group.items.reduce((sum, item) => {
-                    console.log(sum);
-                    console.log(item);
                     return sum + item.amount;
                 }, 0);
             });
@@ -112,6 +115,11 @@
 </script>
 
 <style lang="scss" scoped>
+    .noResult{
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+    }
     ::v-deep {
         .types-tabs-item {
             background: white;

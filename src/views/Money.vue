@@ -1,11 +1,11 @@
 <template>
     <Layout class-prefix="layout">
-        {{recordList}}
         <Tags @update:value="onUpdateTags"/>
         <div class="notes">
-            <FormItem :placeholder="'请输入备注'"
-                      :filed-name="'备注'"
-                      @update:value="onUpdateNotes"/>
+            <FormItem placeholder="请输入备注"
+                      filed-name="备注"
+                      :value.sync="record.notes"
+            />
         </div>
         <Tabs :value.sync="record.type" :data-source="recordTypeList"/>
         <NumberPad :value.sync="record.amount"
@@ -44,13 +44,16 @@
             this.record.tags = value;
         }
 
-        onUpdateNotes(value: string) {
-            this.record.notes = value;
-        }
-
         saveRecord() {
+            if (!this.record.tags || this.record.tags.length === 0) {
+                window.alert('请至少选择一个标签');
+                return;
+            }
             this.$store.commit('createRecord', this.record);
-            window.alert('添加成功')
+            if (this.$store.state.createRecordError === null) {
+                this.record.notes = '';
+                window.alert('记账成功');
+            }
         }
     }
 </script>

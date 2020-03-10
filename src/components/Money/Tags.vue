@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts">
-    import vue from 'vue';
     import {Component} from 'vue-property-decorator';
     import {mixins} from 'vue-class-component';
     import TagHelper from '@/mixins/TagHelper';
@@ -78,7 +77,7 @@
         }
 
         .new {
-            padding-top: 6px;
+            padding-top: 14px;
 
             button {
                 background: transparent;

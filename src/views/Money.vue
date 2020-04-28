@@ -56,6 +56,7 @@
                     this.record.notes = '';
                     window.alert('记账成功');
                 }
+
             }
         }
     }

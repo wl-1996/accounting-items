@@ -25,6 +25,10 @@
     @import "~@/assets/style/helper.scss";
 
     nav {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        background: white;
         @extend %outerShadow;
         display: flex;
         flex-direction: row;
@@ -46,6 +50,7 @@
 
         > .item.selected {
             color: $color-highlight;
+            background: rgba(222,222,222);
         }
     }
 </style>

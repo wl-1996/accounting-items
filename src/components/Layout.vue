@@ -24,6 +24,7 @@
     .content {
         flex-grow: 1;
         overflow: auto;
+        margin-bottom: 8.5vh;
     }
 
 </style>

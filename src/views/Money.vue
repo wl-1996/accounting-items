@@ -48,11 +48,14 @@
             if (!this.record.tags || this.record.tags.length === 0) {
                 window.alert('请至少选择一个标签');
                 return;
-            }
-            this.$store.commit('createRecord', this.record);
-            if (this.$store.state.createRecordError === null) {
-                this.record.notes = '';
-                window.alert('记账成功');
+            } else if (this.record.amount === 0) {
+                window.alert('金额不能为0，请输入金额');
+            } else {
+                this.$store.commit('createRecord', this.record);
+                if (this.$store.state.createRecordError === null) {
+                    this.record.notes = '';
+                    window.alert('记账成功');
+                }
             }
         }
     }

@@ -35,7 +35,7 @@
         beautify(string: string) {
             const thatDay = dayjs(string);
             const today = dayjs();
-            if (dayjs(string).isSame(new Date(),
+            if (thatDay.isSame(today,
                 'day')) {
                 return '今天';
             } else if (thatDay.isSame(today.subtract(1, 'day'), 'day')) {
@@ -87,19 +87,25 @@
             for (let i = 1; i < newRecordList.length; i++) {
                 const current = newRecordList[i];
                 const last = result[result.length - 1];
-                if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+                if (
+                    dayjs(last.title)
+                        .isSame(dayjs(current.createdAt), 'day')
+                ) {
                     last.items.push(current);
                 } else {
-                    result.push({
-                        title: dayjs(current.createdAt).format('YYYY-M-D'),
-                        items: [current]
-                    });
+                    result.push(
+                        {
+                            title: dayjs(current.createdAt).format('YYYY-M-D'),
+                            items: [current]
+                        }
+                    );
                 }
             }
             result.map(group => {
-                group.total = group.items.reduce((sum, item) => {
-                    return sum + item.amount;
-                }, 0);
+                group.total = group.items
+                    .reduce((sum, item) => {
+                        return sum + item.amount;
+                    }, 0);
             });
             return result;
         }
@@ -115,11 +121,12 @@
 </script>
 
 <style lang="scss" scoped>
-    .noResult{
+    .noResult {
         padding: 16px;
         display: flex;
         justify-content: center;
     }
+
     ::v-deep {
         .types-tabs-item {
             background: white;

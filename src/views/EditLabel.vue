@@ -50,7 +50,7 @@
         }
 
         remove() {
-            if (this.currentTag) {
+            if (this.currentTag && confirm('确定删除该标签')) {
                 this.$store.commit('removeTag', this.currentTag.id);
             }
         }

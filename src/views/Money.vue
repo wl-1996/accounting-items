@@ -7,7 +7,8 @@
                       :value.sync="record.notes"
             />
         </div>
-        <Tabs :value.sync="record.type" :data-source="recordTypeList"/>
+        <Tabs :value.sync="record.type"
+              :data-source="recordTypeList"/>
         <NumberPad :value.sync="record.amount"
                    @submit="saveRecord"/>
     </Layout>
@@ -28,7 +29,12 @@
     })
 
     export default class Money extends Vue {
-        record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+        record: RecordItem = {
+            tags: [],
+            notes: '',
+            type: '-',
+            amount: 0
+        };
         recordTypeList = recordTypeList;
 
         get recordList() {

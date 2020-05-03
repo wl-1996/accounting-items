@@ -18,7 +18,6 @@
     import {mixins} from 'vue-class-component';
     import TagHelper from '@/mixins/TagHelper';
 
-
     @Component
 
     export default class Tags extends mixins(TagHelper) {
